@@ -1,0 +1,187 @@
+import DataSource from './../data/dataSource.js';
+
+class NewsList extends HTMLElement {
+    //on set [category, articles]
+
+    connectedCallback() {
+        this.category = this.getAttribute('category') || null;
+
+        // dataCall(this.category);
+        this.dataCall();
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if(name === 'category') {
+            
+        }
+    }
+
+    set category(category) {
+        this._category = category;
+    }
+
+    dataCall() {
+        DataSource.getTopHeadlinesArticles()
+        .then(results => {
+            this.articles = results;
+            this.render();            
+        })
+        .catch(message => {
+            this.renderError(message);
+        });
+    }
+
+    render() {
+        this.innerHTML = `
+            ${this.style()}
+            <div class="container">
+                <div class="d-flex bd-highlight">
+                    <div class="p-2 flex-grow-1 bd-highlight">
+                        <h1 class="kategori-title">JUDUL</h1>
+                    </div>
+                    <div class="p-2 bd-highlight slide-button swiper-slide-button-prev">
+                        <img src="./src/images/icons/keyboard_arrow_left-24px.svg" alt="left arrow">
+                    </div>
+                    <div class="p-2 bd-highlight slide-button swiper-slide-button-next">
+                        <img src="./src/images/icons/keyboard_arrow_right-24px.svg" alt="right arrow">
+                    </div>
+                </div>
+                
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        ${this.printArticles(this.articles)}
+                    </div>
+                    <!-- <div class="swiper-pagination"></div> -->
+                </div>
+            </div>`;
+
+            this.swiper();
+    }
+
+    renderError(message) {
+        console.log(message);
+    }
+
+    swiper() {
+        new Swiper('.swiper-container', {
+            //  slidesPerView: '3',
+            centeredSlides: true,
+            spaceBetween: 30,
+            loop: true,
+            //  autoplay: {
+            //      delay: 3000
+            //  }, 
+            grabCursor: true,
+            navigation: {
+                nextEl: '.swiper-slide-button-next',
+                prevEl: '.swiper-slide-button-prev'
+            },
+            pagination: {
+                el: '.swiper-pagination'
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+            }
+        });
+    }
+
+    printArticles(articles) {
+        let el = '';
+        for(const article of articles) {
+            el += `
+                <div class="swiper-slide">
+                    <a href="${article.url}" target="_blank">
+                        <figure class="figure">
+                            <img src="${article.urlToImage}"
+                                class="figure-img img-fluid rounded" alt="...">
+                            <figcaption class="figure-caption">
+                                <h5>${article.title.slice(0,100)}</h5>
+                                <p>${article.description}</p>
+                                <p class="tanggal">${article.publishedAt.slice(0,10)}</p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+                `;
+        }
+        return el;
+    }
+
+    style() {
+        return `
+            <style>
+            .swiper-container {
+                width: 100%;
+                height: 425px;
+            }
+
+            .kategori-title {
+                border-left: 4px solid turquoise; 
+                padding-left: 10px;
+            }
+
+            .slide-button {
+                cursor: pointer;
+            }
+
+            .slide-button img {
+                width: 56px;
+                height: 56px;
+            }
+
+            .swiper-slide {
+                text-align: center;
+                font-size: 18px;
+
+                /* Center slide text vertically */
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                width: 40%;
+            } 
+            
+            .swiper-slide img {
+                max-height: 50vh;
+            } 
+
+            .swiper-slide h5 {
+                color: black;
+            }
+
+            figcaption {
+                text-align: left;
+            }
+
+            .tanggal {
+                font-size: .9rem;
+            }
+            </style>
+        `;
+    }
+
+    static get observedAttributes() {
+        return ['category'];
+    }
+}
+
+customElements.define('news-list', NewsList);

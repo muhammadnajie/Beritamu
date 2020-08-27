@@ -1,0 +1,33 @@
+{
+  "name": "ffwd-dicoding-submission--beritamu",
+  "version": "1.0.0",
+  "description": "Fundamental Frontend Web Development Course Submission",
+  "main": "./src/index.js",
+  "scripts": {
+    "build:prod": "webpack --config webpack.prod.js",
+    "build:dev": "webpack-dev-server --config webpack.dev.js --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/muhammadnajie/ffwd-dicoding-submission"
+  },
+  "keywords": [
+    "HTML",
+    "CSS",
+    "JS",
+    "AJAX",
+    "Frontend"
+  ],
+  "author": "Muhammad Najie",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.0.0-alpha1",
+    "swiper": "^6.1.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.2"
+  }
+}
