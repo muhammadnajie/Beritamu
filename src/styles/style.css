@@ -30,3 +30,11 @@ nav {
 main {
     /* background-color: #6e6e6e; */
 }
+
+footer {
+    display: block;
+    height: 2.5rem;
+    line-height: 1.25;
+    color: #454545;
+    background-color: #EBEAEB;
+}

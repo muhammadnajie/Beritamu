@@ -4,7 +4,8 @@
     * 
 */
 import "./scripts/components/nav-bar.js";
-import './scripts/components/news-list.js';
+import "./scripts/components/news-list.js";
+import "./scripts/components/footer-beritamu.js";
 
 
 /* 
