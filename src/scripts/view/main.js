@@ -1,7 +1,6 @@
 const main = () => {
     navbarActiveSign();
     jakartaTimeDisplay();
-    swiperSlider();
     categoryBtnGroup();
 }
 
@@ -41,40 +40,6 @@ const jakartaTimeDisplay = () => {
     }
 
     updateTime();
-}
-
-const swiperSlider = () => {
-    var swiper = new Swiper('.swiper-container', {
-        //  slidesPerView: '3',
-        centeredSlides: true,
-        spaceBetween: 30,
-        loop: true,
-        //  autoplay: {
-        //      delay: 3000
-        //  }, 
-        grabCursor: true,
-        navigation: {
-            nextEl: '.swiper-slide-button-next',
-            prevEl: '.swiper-slide-button-prev'
-        },
-        pagination: {
-            el: '.swiper-pagination'
-        },
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 10,
-            },
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-            },
-            1024: {
-                slidesPerView: 3,
-                spaceBetween: 30,
-            },
-        }
-    });
 }
 
 const categoryBtnGroup = () => {
