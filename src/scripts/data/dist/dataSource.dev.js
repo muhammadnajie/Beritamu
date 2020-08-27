@@ -20,6 +20,11 @@ function () {
 
   _createClass(DataSource, null, [{
     key: "getEverythingArticles",
+
+    /*
+        Gunakan ini untuk bagian fitur pencarian
+        next feature
+    */
     value: function getEverythingArticles(category) {
       var url = 'https://newsapi.org/v2';
       var endpoint = '/top-headlines';
@@ -44,16 +49,16 @@ function () {
       var category = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var url = 'https://newsapi.org/v2';
       var endpoint = '/top-headlines';
-      var parameterOption = "?country=id&apiKey=27de8fd90e3d48f8a9cccba3b51a07f7"; //
+      var parameterOption = "?country=id&pageSize=20&apiKey=27de8fd90e3d48f8a9cccba3b51a07f7"; //
 
       category ? parameterOption += "&category=".concat(category) : "";
       return fetch(url + endpoint + parameterOption).then(function (response) {
         //convert response to JSON
         return response.json();
       }).then(function (responseJson) {
-        console.log(responseJson.articles);
-        /* response.totalResults */
+        // console.log(responseJson.articles);
 
+        /* response.totalResults */
         if (responseJson.articles) {
           return Promise.resolve(responseJson.articles);
         } else {

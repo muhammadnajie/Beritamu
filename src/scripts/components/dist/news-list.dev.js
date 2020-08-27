@@ -45,32 +45,44 @@ function (_HTMLElement) {
     key: "connectedCallback",
     //on set [category, articles]
     value: function connectedCallback() {
-      this.category = this.getAttribute('category') || null; // dataCall(this.category);
-
-      this.dataCall();
+      this.category = this.getAttribute('category') || null;
+      this.dataCall(this.category);
     }
   }, {
     key: "attributeChangedCallback",
     value: function attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'category') {}
+      if (name === 'category') {
+        this.category = newValue;
+        this.dataCall(this.category);
+      }
     }
   }, {
     key: "dataCall",
-    value: function dataCall() {
+    value: function dataCall(category) {
       var _this = this;
 
-      _dataSource["default"].getTopHeadlinesArticles().then(function (results) {
-        _this.articles = results;
+      if (typeof category === "undefined") {
+        _dataSource["default"].getTopHeadlinesArticles().then(function (results) {
+          _this.articles = results;
 
-        _this.render();
-      })["catch"](function (message) {
-        _this.renderError(message);
-      });
+          _this.render();
+        })["catch"](function (message) {
+          _this.renderError(message);
+        });
+      } else {
+        _dataSource["default"].getTopHeadlinesArticles(category).then(function (results) {
+          _this.articles = results;
+
+          _this.render();
+        })["catch"](function (message) {
+          _this.renderError(message);
+        });
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      this.innerHTML = "\n            ".concat(this.style(), "\n            <div class=\"container\">\n                <div class=\"d-flex bd-highlight\">\n                    <div class=\"p-2 flex-grow-1 bd-highlight\">\n                        <h1 class=\"kategori-title\">JUDUL</h1>\n                    </div>\n                    <div class=\"p-2 bd-highlight slide-button swiper-slide-button-prev\">\n                        <img src=\"./src/images/icons/keyboard_arrow_left-24px.svg\" alt=\"left arrow\">\n                    </div>\n                    <div class=\"p-2 bd-highlight slide-button swiper-slide-button-next\">\n                        <img src=\"./src/images/icons/keyboard_arrow_right-24px.svg\" alt=\"right arrow\">\n                    </div>\n                </div>\n                \n                <div class=\"swiper-container\">\n                    <div class=\"swiper-wrapper\">\n                        ").concat(this.printArticles(this.articles), "\n                    </div>\n                    <!-- <div class=\"swiper-pagination\"></div> -->\n                </div>\n            </div>");
+      this.innerHTML = "\n            ".concat(this.style(), "\n            <div class=\"container\">\n                <div class=\"d-flex bd-highlight\">\n                    <div class=\"p-2 flex-grow-1 bd-highlight\">\n                        <h2 class=\"kategori-title\">").concat(this.category ? this.category.toUpperCase() : "Umum", "</h2>\n                    </div>\n                    <div class=\"p-2 bd-highlight slide-button swiper-slide-button-prev\">\n                        <img src=\"./src/images/icons/keyboard_arrow_left-24px.svg\" alt=\"left arrow\">\n                    </div>\n                    <div class=\"p-2 bd-highlight slide-button swiper-slide-button-next\">\n                        <img src=\"./src/images/icons/keyboard_arrow_right-24px.svg\" alt=\"right arrow\">\n                    </div>\n                </div>\n                \n                <div class=\"swiper-container\">\n                    <div class=\"swiper-wrapper\">\n                        ").concat(this.printArticles(this.articles), "\n                    </div>\n                    <!-- <div class=\"swiper-pagination\"></div> -->\n                </div>\n            </div>");
       this.swiper();
     }
   }, {
@@ -82,7 +94,6 @@ function (_HTMLElement) {
     key: "swiper",
     value: function swiper() {
       new Swiper('.swiper-container', {
-        //  slidesPerView: '3',
         centeredSlides: true,
         spaceBetween: 30,
         loop: true,
@@ -98,17 +109,25 @@ function (_HTMLElement) {
           el: '.swiper-pagination'
         },
         breakpoints: {
-          640: {
-            slidesPerView: 2,
+          480: {
+            slidesPerView: 1,
             spaceBetween: 10
           },
           768: {
             slidesPerView: 2,
+            centeredSlides: false,
             spaceBetween: 20
           },
           1024: {
             slidesPerView: 3,
+            slidesPerGroup: 3,
             spaceBetween: 30
+          },
+          1440: {
+            slidesPerView: 4,
+            slidesPerGroup: 2,
+            centeredSlides: false,
+            spaceBetween: 40
           }
         }
       });
@@ -124,7 +143,7 @@ function (_HTMLElement) {
       try {
         for (var _iterator = articles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var article = _step.value;
-          el += "\n                <div class=\"swiper-slide\">\n                    <a href=\"".concat(article.url, "\" target=\"_blank\">\n                        <figure class=\"figure\">\n                            <img src=\"").concat(article.urlToImage, "\"\n                                class=\"figure-img img-fluid rounded\" alt=\"...\">\n                            <figcaption class=\"figure-caption\">\n                                <h5>").concat(article.title.slice(0, 100), "</h5>\n                                <p>").concat(article.description, "</p>\n                                <p class=\"tanggal\">").concat(article.publishedAt.slice(0, 10), "</p>\n                            </figcaption>\n                        </figure>\n                    </a>\n                </div>\n                ");
+          el += "\n                <article class=\"swiper-slide\">\n                    <a href=\"".concat(article.url, "\" target=\"_blank\">\n                        <figure class=\"figure\">\n                            <img src=\"").concat(article.urlToImage, "\"\n                                class=\"figure-img img-fluid rounded\" alt=\"...\">\n                            <figcaption class=\"figure-caption\">\n                                <h5>").concat(article.title.slice(0, 100), "</h5>\n                                <p>").concat(article.description, "</p>\n                                <p class=\"tanggal\">").concat(article.publishedAt.slice(0, 10), "</p>\n                            </figcaption>\n                        </figure>\n                    </a>\n                </article>\n                ");
         }
       } catch (err) {
         _didIteratorError = true;
@@ -146,12 +165,7 @@ function (_HTMLElement) {
   }, {
     key: "style",
     value: function style() {
-      return "\n            <style>\n            .swiper-container {\n                width: 100%;\n                height: 425px;\n            }\n\n            .kategori-title {\n                border-left: 4px solid turquoise; \n                padding-left: 10px;\n            }\n\n            .slide-button {\n                cursor: pointer;\n            }\n\n            .slide-button img {\n                width: 56px;\n                height: 56px;\n            }\n\n            .swiper-slide {\n                text-align: center;\n                font-size: 18px;\n\n                /* Center slide text vertically */\n                display: -webkit-box;\n                display: -ms-flexbox;\n                display: -webkit-flex;\n                display: flex;\n                -webkit-box-pack: center;\n                -ms-flex-pack: center;\n                -webkit-justify-content: center;\n                justify-content: center;\n                -webkit-box-align: center;\n                -ms-flex-align: center;\n                -webkit-align-items: center;\n                align-items: center;\n                width: 40%;\n            } \n            \n            .swiper-slide img {\n                max-height: 50vh;\n            } \n\n            .swiper-slide h5 {\n                color: black;\n            }\n\n            figcaption {\n                text-align: left;\n            }\n\n            .tanggal {\n                font-size: .9rem;\n            }\n            </style>\n        ";
-    }
-  }, {
-    key: "category",
-    set: function set(category) {
-      this._category = category;
+      return "\n            <style>\n            news-list {\n                display: block;\n                margin-top: 1rem;\n            }\n\n            .swiper-container {\n                width: 100%;\n                height: 425px;\n            }\n\n            .kategori-title {\n                border-left: 4px solid turquoise; \n                padding-left: 10px;\n            }\n\n            .slide-button {\n                cursor: pointer;\n            }\n\n            .slide-button img {\n                width: 40px;\n                height: 40px;\n            }\n\n            .swiper-slide {\n                text-align: center;\n                font-size: 18px;\n\n                /* Center slide text vertically */\n                display: -webkit-box;\n                display: -ms-flexbox;\n                display: -webkit-flex;\n                display: flex;\n                -webkit-box-pack: center;\n                -ms-flex-pack: center;\n                -webkit-justify-content: center;\n                justify-content: center;\n                -webkit-box-align: center;\n                -ms-flex-align: center;\n                -webkit-align-items: center;\n                align-items: center;\n            } \n            \n            .swiper-slide img {\n                max-height: 50vh;\n            } \n\n            .swiper-slide h5 {\n                color: black;\n            }\n\n            figcaption {\n                text-align: left;\n            }\n\n            .tanggal {\n                font-size: .9rem;\n            }\n            </style>\n        ";
     }
   }], [{
     key: "observedAttributes",

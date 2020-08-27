@@ -33,7 +33,7 @@ class NavBar extends HTMLElement {
                                 <a class="nav-link" href="#kategori-hiburan">HIBURAN</a>
                             </li>
                         </ul>
-                        <span class="navbar-text time">
+                        <span class="navbar-text time ml-auto">
                             <small></small>
                         </span>
                     </div>

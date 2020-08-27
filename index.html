@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./node_modules/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="./src/styles/style.css">
+    <style>
+        .select-news-category {
+            padding-top: 1rem;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,6 +19,18 @@
     </header>
 
     <main>
+        <section class="select-news-category text-center">
+            <div class="container">
+                <h2>Pilih kategori berita</h2>
+                <a href="#" class="btn btn-info mb-1" role="button">Umum</a>
+                <a href="#" class="btn btn-info mb-1" category="business" role="button">Bisnis</a>
+                <a href="#" class="btn btn-info mb-1" category="sports" role="button">Olahraga</a>
+                <a href="#" class="btn btn-info mb-1" category="technology" role="button">Teknologi</a>
+                <a href="#" class="btn btn-info mb-1" category="health" role="button">Kesehatan</a>
+                <a href="#" class="btn btn-info mb-1" category="science" role="button">Sains</a>
+                <a href="#" class="btn btn-info mb-1" category="entertainment" role="button">Hiburan</a>
+            </div>
+        </section>
         <news-list></news-list>
     </main>
 

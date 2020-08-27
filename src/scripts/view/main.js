@@ -2,6 +2,7 @@ const main = () => {
     navbarActiveSign();
     jakartaTimeDisplay();
     swiperSlider();
+    categoryBtnGroup();
 }
 
 const navbarActiveSign = () => {
@@ -73,6 +74,21 @@ const swiperSlider = () => {
                 spaceBetween: 30,
             },
         }
+    });
+}
+
+const categoryBtnGroup = () => {
+    const newsListEl = document.querySelector('news-list');
+    const btnsSelectNewsCategory = document.querySelectorAll('.btn');
+    btnsSelectNewsCategory.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const categoryAtt = this.getAttribute('category') || null;
+            if (categoryAtt) {
+                newsListEl.setAttribute('category', this.getAttribute('category'));
+            } else {
+                newsListEl.removeAttribute('category');
+            }
+        });
     });
 }
 

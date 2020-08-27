@@ -6,29 +6,36 @@ class NewsList extends HTMLElement {
     connectedCallback() {
         this.category = this.getAttribute('category') || null;
 
-        // dataCall(this.category);
-        this.dataCall();
+        this.dataCall(this.category);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if(name === 'category') {
-            
+            this.category = newValue;
+            this.dataCall(this.category);
         }
     }
 
-    set category(category) {
-        this._category = category;
-    }
-
-    dataCall() {
-        DataSource.getTopHeadlinesArticles()
-        .then(results => {
-            this.articles = results;
-            this.render();            
-        })
-        .catch(message => {
-            this.renderError(message);
-        });
+    dataCall(category) {
+        if(typeof category === "undefined") {
+            DataSource.getTopHeadlinesArticles()
+                .then(results => {
+                    this.articles = results;
+                    this.render();
+                })
+                .catch(message => {
+                    this.renderError(message);
+                });
+        }else {
+            DataSource.getTopHeadlinesArticles(category)
+            .then(results => {
+                this.articles = results;
+                this.render();            
+            })
+            .catch(message => {
+                this.renderError(message);
+            });
+        }
     }
 
     render() {
@@ -37,7 +44,7 @@ class NewsList extends HTMLElement {
             <div class="container">
                 <div class="d-flex bd-highlight">
                     <div class="p-2 flex-grow-1 bd-highlight">
-                        <h1 class="kategori-title">JUDUL</h1>
+                        <h2 class="kategori-title">${this.category ?  this.category.toUpperCase() : "Umum"}</h2>
                     </div>
                     <div class="p-2 bd-highlight slide-button swiper-slide-button-prev">
                         <img src="./src/images/icons/keyboard_arrow_left-24px.svg" alt="left arrow">
@@ -64,7 +71,6 @@ class NewsList extends HTMLElement {
 
     swiper() {
         new Swiper('.swiper-container', {
-            //  slidesPerView: '3',
             centeredSlides: true,
             spaceBetween: 30,
             loop: true,
@@ -80,18 +86,26 @@ class NewsList extends HTMLElement {
                 el: '.swiper-pagination'
             },
             breakpoints: {
-                640: {
-                    slidesPerView: 2,
+                480: {
+                    slidesPerView: 1,
                     spaceBetween: 10,
                 },
                 768: {
                     slidesPerView: 2,
-                    spaceBetween: 20,
+                    centeredSlides: false,
+                    spaceBetween: 20
                 },
                 1024: {
                     slidesPerView: 3,
-                    spaceBetween: 30,
+                    slidesPerGroup: 3,
+                    spaceBetween: 30
                 },
+                1440: {
+                    slidesPerView: 4,
+                    slidesPerGroup: 2,
+                    centeredSlides: false,
+                    spaceBetween: 40,
+                }
             }
         });
     }
@@ -100,7 +114,7 @@ class NewsList extends HTMLElement {
         let el = '';
         for(const article of articles) {
             el += `
-                <div class="swiper-slide">
+                <article class="swiper-slide">
                     <a href="${article.url}" target="_blank">
                         <figure class="figure">
                             <img src="${article.urlToImage}"
@@ -112,7 +126,7 @@ class NewsList extends HTMLElement {
                             </figcaption>
                         </figure>
                     </a>
-                </div>
+                </article>
                 `;
         }
         return el;
@@ -121,6 +135,11 @@ class NewsList extends HTMLElement {
     style() {
         return `
             <style>
+            news-list {
+                display: block;
+                margin-top: 1rem;
+            }
+
             .swiper-container {
                 width: 100%;
                 height: 425px;
@@ -136,8 +155,8 @@ class NewsList extends HTMLElement {
             }
 
             .slide-button img {
-                width: 56px;
-                height: 56px;
+                width: 40px;
+                height: 40px;
             }
 
             .swiper-slide {
@@ -157,7 +176,6 @@ class NewsList extends HTMLElement {
                 -ms-flex-align: center;
                 -webkit-align-items: center;
                 align-items: center;
-                width: 40%;
             } 
             
             .swiper-slide img {
