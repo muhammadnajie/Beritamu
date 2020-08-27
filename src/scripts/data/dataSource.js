@@ -30,8 +30,13 @@ class DataSource {
         const endpoint = '/top-headlines';
         let parameterOption = `?country=id&pageSize=20&apiKey=27de8fd90e3d48f8a9cccba3b51a07f7`;
 
-        //
+        //Cek category NULL atau tidak
         category ? parameterOption += `&category=${category}` : "";
+
+        // Cek lebar window
+        let lebarWindow = window.innerWidth;
+        lebarWindow >= 1024 && lebarWindow < 1440 ? parameterOption += '&pageSize=18'
+            : parameterOption += '&pageSize=20';  
 
         return fetch(url+endpoint+parameterOption)
                 .then(response => {

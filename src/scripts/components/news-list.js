@@ -88,7 +88,7 @@ class NewsList extends HTMLElement {
             breakpoints: {
                 480: {
                     slidesPerView: 1,
-                    spaceBetween: 10,
+                    spaceBetween: 10
                 },
                 768: {
                     slidesPerView: 2,
@@ -104,7 +104,7 @@ class NewsList extends HTMLElement {
                     slidesPerView: 4,
                     slidesPerGroup: 2,
                     centeredSlides: false,
-                    spaceBetween: 40,
+                    spaceBetween: 40
                 }
             }
         });

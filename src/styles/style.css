@@ -31,6 +31,10 @@ main {
     /* background-color: #6e6e6e; */
 }
 
+.select-news-category {
+    padding-top: 1rem;
+}
+
 footer {
     display: block;
     height: 2.5rem;
