@@ -20,7 +20,6 @@ import 'swiper/swiper-bundle.css';
     * Bootstrap
 */
 import 'bootstrap/dist/js/bootstrap.min.js';
-import Swiper from 'swiper/bundle';
 
 /* 
     Import app core

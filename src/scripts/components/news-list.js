@@ -1,4 +1,5 @@
 import DataSource from './../data/dataSource.js';
+import Swiper from 'swiper/bundle';
 
 class NewsList extends HTMLElement {
     //on set [category, articles]
@@ -109,6 +110,16 @@ class NewsList extends HTMLElement {
             }
         });
     }
+
+    // printArticles() {
+    //     let el = '';
+    //     for (let i = 1; i <= 10; i++) {
+    //         el += `
+    //             <article class="swiper-slide">Slide ${i}</article>
+    //             `;
+    //     }
+    //     return el;
+    // }
 
     printArticles(articles) {
         let el = '';
