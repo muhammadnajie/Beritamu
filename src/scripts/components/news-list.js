@@ -6,6 +6,7 @@ class NewsList extends HTMLElement {
 
     connectedCallback() {
         this.category = this.getAttribute('category') || null;
+        this.judul = this.getAttribute('judul');
 
         this.dataCall(this.category);
     }
@@ -15,6 +16,8 @@ class NewsList extends HTMLElement {
             this.category = newValue;
             this.dataCall(this.category);
         }
+
+        this.judul = this.getAttribute('judul');
     }
 
     dataCall(category) {
@@ -45,7 +48,7 @@ class NewsList extends HTMLElement {
             <div class="container">
                 <div class="d-flex bd-highlight">
                     <div class="p-2 flex-grow-1 bd-highlight">
-                        <h2 class="kategori-title">${this.category ?  this.category.toUpperCase() : "Umum"}</h2>
+                        <h2 class="kategori-title">${this.category ?  this.capitalize(this.category) : "Umum"}</h2>
                     </div>
                     <div class="p-2 bd-highlight slide-button swiper-slide-button-prev">
                         <img src="./src/images/icons/keyboard_arrow_left-24px.svg" alt="left arrow">
@@ -64,6 +67,10 @@ class NewsList extends HTMLElement {
             </div>`;
 
             this.swiper();
+    }
+
+    capitalize(text) {
+        return text.slice(0,1).toUpperCase() + text.slice(1,);
     }
 
     renderError(message) {
