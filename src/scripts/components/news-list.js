@@ -51,10 +51,10 @@ class NewsList extends HTMLElement {
                         <h2 class="kategori-title">${this.category ?  this.capitalize(this.category) : "Umum"}</h2>
                     </div>
                     <div class="p-2 bd-highlight slide-button swiper-slide-button-prev">
-                        <img src="./src/images/icons/keyboard_arrow_left-24px.svg" alt="left arrow">
+                        <img src="./images/icons/keyboard_arrow_left-24px.svg" alt="left arrow">
                     </div>
                     <div class="p-2 bd-highlight slide-button swiper-slide-button-next">
-                        <img src="./src/images/icons/keyboard_arrow_right-24px.svg" alt="right arrow">
+                        <img src="./images/icons/keyboard_arrow_right-24px.svg" alt="right arrow">
                     </div>
                 </div>
                 
